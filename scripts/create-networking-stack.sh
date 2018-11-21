@@ -9,4 +9,4 @@ echo "TARGET_REGION: $TARGET_REGION"
 echo "TARGET_ENVIRONMENT: $TARGET_ENVIRONMENT"
 echo "IMAGE_TAG: $IMAGE_TAG"
 
-aws cloudformation create-stack --stack-name Networking-Stack$STACK_SUFFIX --template-body file://templates/NetworkingStack.yaml  --profile default --region $TARGET_REGION
+aws cloudformation create-stack --stack-name Networking-Stack$STACK_SUFFIX-$TARGET_ENVIRONMENT --template-body file://templates/NetworkingStack.yaml  --profile default --region $TARGET_REGION
