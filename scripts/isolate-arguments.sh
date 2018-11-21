@@ -4,7 +4,7 @@
 SUPPORTED_ENVIRONMENTS=("main" "test")
 
 # Supported Regions
-SUPPORTED_REGIONS=("sa-east-1" "us-west-2" "ap-southeast-1")
+SUPPORTED_REGIONS=("sa-east-1" "us-west-1" "ap-southeast-1")
 
 # Supported Docker image Tags
 SUPPORTED_IMAGE_TAGS=("master" "dev")
