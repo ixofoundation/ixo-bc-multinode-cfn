@@ -1,0 +1,26 @@
+[
+  {
+    "ParameterKey": "TargetEnvironment",
+    "ParameterValue": "%%TargetEnvironment%%"
+  },
+  {
+    "ParameterKey": "ImageTag",
+    "ParameterValue": "%%ImageTag%%"
+  },
+  {
+    "ParameterKey": "NetworkStackName",
+    "ParameterValue": "%%NetworkStackName%%"
+  },
+  {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "%%KeyName%%"
+  },
+  {
+    "ParameterKey": "BlockchainExplorerInstanceType",
+    "ParameterValue": "t2.large"
+  },
+  {
+    "ParameterKey": "VolumeSize",
+    "ParameterValue": "32"
+  }
+]
