@@ -5,13 +5,10 @@ Parameters:
   TargetEnvironment:
     Description: Purpose of environment the stack will represent
     Type: String
-    Default: prod
+    Default: main
     AllowedValues:
-      - prod
-      - uat
-      - qa
-      - audit
-      - sdgfutures
+      - main
+      - test
   ImageTag:
     Description: Docker image tag that should be deployed
     Type: String
