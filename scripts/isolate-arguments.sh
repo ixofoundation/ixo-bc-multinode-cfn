@@ -3,8 +3,8 @@
 # Supported Enviroments, Mainnet & Testnet
 SUPPORTED_ENVIRONMENTS=("main" "test")
 
-# Supported Regions
-SUPPORTED_REGIONS=("sa-east-1" "us-west-1" "ap-southeast-1")
+# Supported Locations
+SUPPORTED_LOCATIONS=("brazil" "california" "ohio" "paris" "mumbai" "singapore" "sydney")
 
 # Supported Docker image Tags
 SUPPORTED_IMAGE_TAGS=("master" "dev")
@@ -36,16 +36,12 @@ while (( "$#" )); do
       TARGET_ENVIRONMENT=$2
       shift 1
       ;;
-    -r|--region)
-      TARGET_REGION=$2
+    -l|--location)
+      TARGET_LOCATION=$2
       shift 1
       ;;
     -i|--image-tag)
       IMAGE_TAG=$2
-      shift 1
-      ;;
-    -s|--stack-suffix)
-      if [[ "$2" =~ ^-.* ]]; then STACK_SUFFIX=""; else STACK_SUFFIX="-$2"; fi
       shift 1
       ;;
     -n|--network-stack)
@@ -68,24 +64,47 @@ while (( "$#" )); do
 done
 
 INVALID_TARGET_ENVIRONMENT=$(isUnsupportedValue $TARGET_ENVIRONMENT ${SUPPORTED_ENVIRONMENTS[@]})
-INVALID_TARGET_REGION=$(isUnsupportedValue $TARGET_REGION ${SUPPORTED_REGIONS[@]})
+INVALID_TARGET_LOCATION=$(isUnsupportedValue $TARGET_LOCATION ${SUPPORTED_LOCATIONS[@]})
 INVALID_IMAGE_TAG=$(isUnsupportedValue $IMAGE_TAG ${SUPPORTED_IMAGE_TAGS[@]})
 
-if [ "$HELP" = true ] || [ "$INVALID_TARGET_REGION" = true ] || [ "$INVALID_IMAGE_TAG" = true ] || [ "$INVALID_TARGET_ENVIRONMENT" = true ] || [ -z "$NETWORK_STACK" ];
+if [ "$HELP" = true ] || [ "$INVALID_TARGET_ENVIRONMENT" = true ] || [ "$INVALID_TARGET_LOCATION" = true ] || [ "$INVALID_IMAGE_TAG" = true ] || [ -z "$NETWORK_STACK" ];
 then
     echo "\nUsage: $0 [Options]"
     echo "\nOptions:"
     echo "\t-e, --environment\n\t\t(valid values: ${SUPPORTED_ENVIRONMENTS[@]})."
-    echo "\t-r, --region\n\t\t(valid values: ${SUPPORTED_REGIONS[@]})."
+    echo "\t-l, --location\n\t\t(valid values: ${SUPPORTED_LOCATIONS[@]})."
     echo "\t-i, --image-tag\n\t\t(valid values: ${SUPPORTED_IMAGE_TAGS[@]})."
-    echo "\t-s, --stack-suffix\n\t\t(Must contain only letters, numbers, dashes and start with an alpha character.)"
     echo "\t-n, --network-stack\n\t\t(Must be the name an existing networking stack previously created in this region.)"
     exit
 fi
 
+case "$TARGET_LOCATION" in
+  brazil)
+    TARGET_REGION="sa-east-1"
+    ;;
+  california)
+    TARGET_REGION="us-west-1"
+    ;;
+  ohio)
+    TARGET_REGION="us-east-2"
+    ;;
+  paris)
+    TARGET_REGION="eu-west-3"
+    ;;
+  mumbai)
+    TARGET_REGION="ap-south-1"
+    ;;
+  singapore)
+    TARGET_REGION="ap-southeast-1"
+    ;;
+  sydney)
+    TARGET_REGION="ap-southeast-2"
+    ;;
+esac
+
 case "$TARGET_ENVIRONMENT" in
   main)
-    KEY_NAME="todo-supply-when-available"
+    KEY_NAME="ixo-bc-mainnet"
     ;;
   test)
     KEY_NAME="ixo-bc-testnet"
