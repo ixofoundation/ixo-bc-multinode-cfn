@@ -104,7 +104,7 @@ esac
 
 case "$TARGET_ENVIRONMENT" in
   main)
-    KEY_NAME="mainnet.blockchain.ixo.world"
+    KEY_NAME="ixo-bc-mainnet"
     ;;
   test)
     KEY_NAME="ixo-bc-testnet"
