@@ -284,19 +284,19 @@ Mappings:
       HVM64: ami-3e60745c
       HVMG2: NOT_SUPPORTED
 Resources:
-  # PersistentVolume:
-  #   Type: AWS::EC2::Volume
-  #   DeletionPolicy: Retain
-  #   Properties:
-  #     AvailabilityZone: !ImportValue
-  #       'Fn::Sub': '${NetworkStackName}-AvailabilityZone'
-  #     VolumeType: gp2
-  #     Size: !Ref VolumeSize
-  #     Tags:
-  #       - Key: "Name"
-  #         Value: !Join [ '-', [ !Ref 'AWS::StackName', 'PersistentVolume' ] ]
-  #       - Key: "Stack"
-  #         Value: !Ref 'AWS::StackName'
+  PersistentVolume:
+    Type: AWS::EC2::Volume
+    DeletionPolicy: Retain
+    Properties:
+      AvailabilityZone: !ImportValue
+        'Fn::Sub': '${NetworkStackName}-AvailabilityZone'
+      VolumeType: gp2
+      Size: !Ref VolumeSize
+      Tags:
+        - Key: "Name"
+          Value: !Join [ '-', [ !Ref 'AWS::StackName', 'PersistentVolume' ] ]
+        - Key: "Stack"
+          Value: !Ref 'AWS::StackName'
   BlockchainExplorerInstance:
     Type: 'AWS::EC2::Instance'
     Metadata:
@@ -304,12 +304,12 @@ Resources:
         configSets:
           Prepare:
             - PrepareCfnHup
-            # - PrepareDocker
-            # - PrepareEnvironmentVariables
-            # - PrepareBlockchainExplorer
-            # - PreparePersistentFilesystemLinkingScript
-          # Deploy:
-            # - DeployBlockchainExplorer
+            - PrepareDocker
+            - PrepareEnvironmentVariables
+            - PrepareBlockchainExplorer
+            - PreparePersistentFilesystemLinkingScript
+          Deploy:
+            - DeployBlockchainExplorer
         PrepareCfnHup:
           files:
             /etc/cfn/cfn-hup.conf:
@@ -495,9 +495,9 @@ Resources:
           DeleteOnTermination: 'true'
           SubnetId: !ImportValue
             'Fn::Sub': '${NetworkStackName}-PublicSubnet-Id'
-      # Volumes:
-      #   - VolumeId: !Ref PersistentVolume
-      #     Device: /dev/sdf
+      Volumes:
+        - VolumeId: !Ref PersistentVolume
+          Device: /dev/sdf
       UserData: !Base64
         'Fn::Join':
           - ''
@@ -515,20 +515,20 @@ Resources:
             - !Ref 'AWS::Region'
             - |+
 
-            # - /tmp/wait-for-volume-and-format-filesystem.sh
-            # - |+
-            #
-            # - rm /tmp/wait-for-volume-and-format-filesystem.sh
-            # - |+
+            - /tmp/wait-for-volume-and-format-filesystem.sh
+            - |+
 
-            # - '/opt/aws/bin/cfn-init -v '
-            # - '         --stack '
-            # - !Ref 'AWS::StackName'
-            # - '         --resource BlockchainExplorerInstance '
-            # - '         --configsets Deploy '
-            # - '         --region '
-            # - !Ref 'AWS::Region'
-            # - |+
+            - rm /tmp/wait-for-volume-and-format-filesystem.sh
+            - |+
+
+            - '/opt/aws/bin/cfn-init -v '
+            - '         --stack '
+            - !Ref 'AWS::StackName'
+            - '         --resource BlockchainExplorerInstance '
+            - '         --configsets Deploy '
+            - '         --region '
+            - !Ref 'AWS::Region'
+            - |+
 
             - '/opt/aws/bin/cfn-signal -e $? '
             - '         --stack '
