@@ -137,81 +137,9 @@ Resources:
           FromPort: '1317'
           ToPort: '1317'
           CidrIp: 0.0.0.0/0
-
     Metadata:
       'AWS::CloudFormation::Designer':
         id: fbd62d3e-087e-46e8-b55b-c22f6d4c09c8a
-  CloudflareProtectedInstancesSecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
-    Properties:
-      VpcId: !Ref VPC
-      GroupDescription: >-
-        Enable HTTP traffic on port 80 only from Cloudflare IPs & SSH access via
-        port 22
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: '22'
-          ToPort: '22'
-          CidrIp: !Ref SSHLocation
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 103.21.244.0/22
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 103.22.200.0/22
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 103.31.4.0/22
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 104.16.0.0/12
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 108.162.192.0/18
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 131.0.72.0/22
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 141.101.64.0/18
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 162.158.0.0/15
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 172.64.0.0/13
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 173.245.48.0/20
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 188.114.96.0/20
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 190.93.240.0/20
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 197.234.240.0/22
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 198.41.128.0/17
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: fbd52d3e-087e-46f8-b55b-c22f6d4b0c79
 Outputs:
   VPCId:
     Description: VPC
@@ -233,11 +161,6 @@ Outputs:
     Value: !Ref BlockchainInstancesSecurityGroup
     Export:
       Name: !Sub '${AWS::StackName}-BlockchainInstancesSecurityGroup-Id'
-  CloudflareProtectedInstancesSecurityGroupId:
-    Description: The security group Id to use for public servers
-    Value: !Ref CloudflareProtectedInstancesSecurityGroup
-    Export:
-      Name: !Sub '${AWS::StackName}-CloudflareProtectedInstancesSecurityGroup-Id'
   AvailabilityZone:
     Description: The availability zone to use for persistent volumes
     Value: !GetAtt

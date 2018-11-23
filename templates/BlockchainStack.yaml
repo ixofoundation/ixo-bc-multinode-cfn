@@ -94,7 +94,6 @@ Parameters:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
     Type: 'AWS::EC2::KeyPair::KeyName'
     ConstraintDescription: must be the name of an existing EC2 KeyPair.
-    Default: ixoworld.xyz
   SSHLocation:
     Description: ' The IP address range that can be used to SSH to the EC2 instances'
     Type: String
@@ -285,19 +284,19 @@ Mappings:
       HVM64: ami-3e60745c
       HVMG2: NOT_SUPPORTED
 Resources:
-  PersistentVolume:
-    Type: AWS::EC2::Volume
-    DeletionPolicy: Retain
-    Properties:
-      AvailabilityZone: !ImportValue
-        'Fn::Sub': '${NetworkStackName}-AvailabilityZone'
-      VolumeType: gp2
-      Size: !Ref VolumeSize
-      Tags:
-        - Key: "Name"
-          Value: !Join [ '-', [ !Ref 'AWS::StackName', 'PersistentVolume' ] ]
-        - Key: "Stack"
-          Value: !Ref 'AWS::StackName'
+  # PersistentVolume:
+  #   Type: AWS::EC2::Volume
+  #   DeletionPolicy: Retain
+  #   Properties:
+  #     AvailabilityZone: !ImportValue
+  #       'Fn::Sub': '${NetworkStackName}-AvailabilityZone'
+  #     VolumeType: gp2
+  #     Size: !Ref VolumeSize
+  #     Tags:
+  #       - Key: "Name"
+  #         Value: !Join [ '-', [ !Ref 'AWS::StackName', 'PersistentVolume' ] ]
+  #       - Key: "Stack"
+  #         Value: !Ref 'AWS::StackName'
   BlockchainExplorerInstance:
     Type: 'AWS::EC2::Instance'
     Metadata:
@@ -305,12 +304,12 @@ Resources:
         configSets:
           Prepare:
             - PrepareCfnHup
-            - PrepareDocker
-            - PrepareEnvironmentVariables
-            - PrepareBlockchainExplorer
-            - PreparePersistentFilesystemLinkingScript
-          Deploy:
-            - DeployBlockchainExplorer
+            # - PrepareDocker
+            # - PrepareEnvironmentVariables
+            # - PrepareBlockchainExplorer
+            # - PreparePersistentFilesystemLinkingScript
+          # Deploy:
+            # - DeployBlockchainExplorer
         PrepareCfnHup:
           files:
             /etc/cfn/cfn-hup.conf:
@@ -488,7 +487,7 @@ Resources:
       NetworkInterfaces:
         - GroupSet:
             - !ImportValue
-              'Fn::Sub': '${NetworkStackName}-CloudflareProtectedInstancesSecurityGroup-Id'
+              'Fn::Sub': '${NetworkStackName}-PublicInstancesSecurityGroup-Id'
             - !ImportValue
               'Fn::Sub': '${NetworkStackName}-BlockchainInstancesSecurityGroup-Id'
           AssociatePublicIpAddress: 'true'
@@ -496,9 +495,9 @@ Resources:
           DeleteOnTermination: 'true'
           SubnetId: !ImportValue
             'Fn::Sub': '${NetworkStackName}-PublicSubnet-Id'
-      Volumes:
-        - VolumeId: !Ref PersistentVolume
-          Device: /dev/sdf
+      # Volumes:
+      #   - VolumeId: !Ref PersistentVolume
+      #     Device: /dev/sdf
       UserData: !Base64
         'Fn::Join':
           - ''
@@ -516,20 +515,20 @@ Resources:
             - !Ref 'AWS::Region'
             - |+
 
-            - /tmp/wait-for-volume-and-format-filesystem.sh
-            - |+
+            # - /tmp/wait-for-volume-and-format-filesystem.sh
+            # - |+
+            #
+            # - rm /tmp/wait-for-volume-and-format-filesystem.sh
+            # - |+
 
-            - rm /tmp/wait-for-volume-and-format-filesystem.sh
-            - |+
-
-            - '/opt/aws/bin/cfn-init -v '
-            - '         --stack '
-            - !Ref 'AWS::StackName'
-            - '         --resource BlockchainExplorerInstance '
-            - '         --configsets Deploy '
-            - '         --region '
-            - !Ref 'AWS::Region'
-            - |+
+            # - '/opt/aws/bin/cfn-init -v '
+            # - '         --stack '
+            # - !Ref 'AWS::StackName'
+            # - '         --resource BlockchainExplorerInstance '
+            # - '         --configsets Deploy '
+            # - '         --region '
+            # - !Ref 'AWS::Region'
+            # - |+
 
             - '/opt/aws/bin/cfn-signal -e $? '
             - '         --stack '
