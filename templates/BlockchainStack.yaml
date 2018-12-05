@@ -539,7 +539,7 @@ Resources:
             - ''
       Tags:
         - Key: Name
-          Value: ixo Blockchain Instance
+          Value: !Sub 'ixo Blockchain Instance ${TargetEnvironment}'
         - Key: Stack
           Value: !Ref 'AWS::StackName'
         - Key: Application

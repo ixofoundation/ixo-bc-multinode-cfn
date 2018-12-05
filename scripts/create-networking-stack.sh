@@ -9,4 +9,4 @@ echo "TARGET_LOCATION: $TARGET_LOCATION"
 echo "TARGET_REGION: $TARGET_REGION"
 echo "TARGET_ENVIRONMENT: $TARGET_ENVIRONMENT"
 
-aws cloudformation create-stack --stack-name Blockchain-Networking-Stack --template-body file://templates/NetworkingStack.yaml  --profile default --region $TARGET_REGION
+aws cloudformation create-stack --stack-name Networking-Stack --template-body file://templates/NetworkingStack.yaml  --profile default --region $TARGET_REGION
