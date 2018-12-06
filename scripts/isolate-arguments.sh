@@ -4,7 +4,7 @@
 SUPPORTED_ENVIRONMENTS=("main" "test")
 
 # Supported Locations
-SUPPORTED_LOCATIONS=("brazil" "california" "ohio" "paris" "mumbai" "singapore" "sydney")
+SUPPORTED_LOCATIONS=("brazil" "california" "ohio" "paris" "mumbai" "singapore" "sydney" "ireland")
 
 # Supported Docker image Tags
 SUPPORTED_IMAGE_TAGS=("master" "dev")
@@ -99,6 +99,9 @@ case "$TARGET_LOCATION" in
     ;;
   sydney)
     TARGET_REGION="ap-southeast-2"
+    ;;
+  ireland)
+    TARGET_REGION="eu-west-1"
     ;;
 esac
 
